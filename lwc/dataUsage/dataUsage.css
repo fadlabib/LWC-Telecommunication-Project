@@ -1,0 +1,17 @@
+.alert-icon {
+   --sds-c-icon-color: orange;
+   color: orange;
+}
+.box {
+   border: solid 0.3em gray;
+   border-left-color: blue;
+   width: auto;
+ }
+ 
+ .bluetext {
+   color: blue;
+ }
+
+ .blueviolettext{
+   color: blueviolet;
+ }

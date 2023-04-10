@@ -1,0 +1,106 @@
+<template>    
+    <lightning-card>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12">
+                <lightning-accordion name="Collapsable">
+                    <lightning-accordion-section label="Wireless - AT&T Unlimited & More SM Premium Multi Line">
+                        <template if:true={assets}>
+                            <template for:each={assets} for:item="asset">
+                                  <div class="box slds-box slds-size_1-of-2" key={asset.Id}>
+                                    <div class="slds-grid slds-gutters slds-var-m-around_xxx-small">
+                                      <template if:true={asset.isPhone__c}>
+                                        <span class="bluetext">
+                                        <img style= "max-height : 50px" src={phoneUsage}> </span>
+                                      </template>
+                                      <template if:true={asset.isTablet__c}>
+                                          <img style= "max-height : 50px" src={tabletUsage}> 
+                                      </template>
+                                      <template if:true={asset.isWatch__c}>
+                                        <span class="bluetext"> 
+                                        <img style= "max-height : 50px" src={watchUsage}> </span>
+                                      </template>
+                                      <div class="slds-col"> <strong> {asset.User__c} </strong>  </div> 
+                                      <div class="slds-text-align_right"> <strong>  {asset.Manufacturer__c} {asset.Make_and_Model__c}  </strong>  </div>
+                                    </div>
+                                    <!-- phone number instead of phone number display -->
+                                    {asset.Phone_Number_Display__c}                                  
+                                    <!-- Data Usage Logic is here -->
+                                    <template for:each={asset.Usage__r} for:item="usage">
+                                      <!-- newly added -->
+
+                                      <!-- if it is unlimited -->
+                                      <template if:true={usage.Is_Unlimited_D__c}>
+                                        <div key ={usage.Id}>
+                                          <div class="slds-text-align_right"> {usage.Data__c} of unlimited GB used  </div>
+                                        </div>
+                                    </template>
+                                      <!-- if the usage not unlimited -->
+                                      <template if:false={usage.Is_Unlimited_D__c}>
+                                        <!-- if over limit -->
+                                        <template if:true={handleWarningSign}>
+                                          <div key ={usage.Id} class="slds-text-align_right" >
+                                            {usage.Data__c} of {usage.Allotted_D__c} GB used
+                                            <lightning-helptext size="xx-small"
+                                                                icon-variant="error"
+                                                                icon-name="utility:warning" 
+                                                                content="Over Limit"
+                                                                alternative-text="Warning"></lightning-helptext>
+                                          </div>                        
+                                        </template>
+                                        
+                                        
+                                        <!-- if not over limit but near the limit-->
+                                        <template if:false={handleWarningSign}>
+                                          <template if:true={handleBellSign}>
+                                            <div key ={usage.Id} class="slds-text-align_right" > 
+                                              {usage.Data__c} of {usage.Allotted_D__c} GB used  
+                                              <lightning-helptext size="xx-small"
+                                                                  class="alert-icon"
+                                                                  icon-name="utility:alert" 
+                                                                  content="Near Limit"
+                                                                  alternative-text="Alert"></lightning-helptext> 
+                                            </div>
+                                          </template>
+                                          <!-- if not over limit and not near the limit-->
+                                          <template if:false={handleBellSign}>
+                                            <template if:false={handleBellSign}>
+                                              <div key ={usage.Id} class="slds-text-align_right" > 
+                                                {usage.Data__c} of {usage.Allotted_D__c} GB used  
+                                              </div>
+                                            </template>
+                                          </template>
+                                        </template>
+                                      </template>
+                                    </template>
+                                  </div>
+                            </template>
+                        </template>
+                        <template if:false={assets}>
+                            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                                <span class="slds-assistive-text">error</span>
+                                <span class="slds-icon_container slds-icon-utility-error slds-var-m-right_x-small" title="Description of icon when needed">
+                                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+                                  </svg>
+                                </span>
+                                <lightning-icon class="slds-text-color_inverse"
+                                                  icon-name="utility:error" 
+                                                  alternative-text="error"></lightning-icon>
+                                <h2>An unexpected error occurred while retrieving the usage. Please refresh or report the issue. Error: Argument Required: recordId
+                                </h2>
+                                <div class="slds-notify__close">
+                                  <button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close">
+                                    <svg class="slds-button__icon" aria-hidden="true">
+                                      <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                    </svg>
+                                    <span class="slds-assistive-text">Close</span>
+                                  </button>
+                                </div>
+                              </div>
+                        </template>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>

@@ -1,0 +1,37 @@
+<template>
+    <div class="slds-text-align_right">
+        <lightning-button-group>
+            <lightning-button label="Data"
+                                variant="brand"
+                                onclick={handleDataClick}></lightning-button>
+            <lightning-button label="Text"
+                                onclick={handleTextClick} ></lightning-button>
+            <lightning-button label="Talk"
+                                onclick={handleTalkClick} ></lightning-button>
+        </lightning-button-group>
+        <div if:true={showData}> 
+            <div class= "slds-text-align_left">{dataText}  </div> 
+        </div>
+        <div if:true={showText}> 
+            <div class= "slds-text-align_left">{textMessage}  </div> 
+        </div>
+        <div if:true={showTalk}> 
+            <div class= "slds-text-align_left">{talkTotal}  </div> 
+        </div>
+
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="6" padding="around-small">
+                <lightning-card>
+                    <template if:true={doughnutChartData.length}>
+                        <c-charts   type="doughnut" 
+                                    chart-heading="usages"
+                                    chart-labels={doughnutChartLabels}
+                                    chart-data={doughnutChartData}
+                                    > 
+                        </c-charts>
+                    </template>
+                </lightning-card>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>
